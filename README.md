@@ -1,2 +1,3 @@
-# canvas-practice
+# Canvas practice
+
 Practice repo for HTML5 canvas
