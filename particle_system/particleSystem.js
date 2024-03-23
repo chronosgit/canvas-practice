@@ -1,5 +1,5 @@
 /* Setup */
-const canvas = document.getElementById("particle_system_canvas");
+const canvas = document.getElementById("particle_system");
 const ctx = canvas.getContext("2d"); // WebGL or 2D
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;

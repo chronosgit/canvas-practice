@@ -1,0 +1,75 @@
+.cropper_wrapper {
+    position: fixed;
+    top: 1rem;
+    right: 0;
+    left: 0;
+    
+    padding-block: 2rem;
+    /* Display is dynamic */
+    display: none; /* None or Flex */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 0 auto;
+    width: 80%;
+    background-color: #e9e6e6;
+    box-shadow: 0 0 1rem #978f8f;
+    border-radius: 1rem;
+}
+
+.cropper_container {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cropper_img {
+    /* Bad limitter? */
+    --limit: 100%;
+    max-width: var(--limit);
+    max-height: var(--limit);
+
+    object-fit: contain;
+}   
+
+.cropper_canvas {
+    position: absolute;
+    resize: both;
+
+    /* Temporary */
+    background-color: rgba(252, 79, 79, 0.5);
+}
+
+.cropper_btns {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cropper_btn {
+    padding: 0.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;   
+    color: white;
+    background-color: rgb(59, 163, 233);
+    text-transform: uppercase;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.cropper_btn:hover {
+    background-color: rgb(52, 144, 206);
+}
+
+.cropper_btn_cancel {
+    background-color: rgb(235, 46, 46);
+}
+
+.cropper_btn_cancel:hover {
+    background-color: rgb(190, 39, 39);
+}
