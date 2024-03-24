@@ -1,53 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="particle_system/particle_system.css"> -->
-    <link rel="stylesheet" href="cropper/index.css">
-    <title>Canvas practice</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- <link rel="stylesheet" href="particle_system/particle_system.css"> -->
+	<link rel="stylesheet" href="cropper/index.css">
+	<title>Canvas practice</title>
 </head>
 
 <body>
-    <!-- Particle system markup -->
-    <!-- <canvas id="particle_system"></canvas> -->
+	<!-- Particle system markup -->
+	<!-- <canvas id="particle_system"></canvas> -->
 
-    <!-- Image loader & cropper markup -->
-    <div id="loader_wrapper" class="loader_wrapper">
-        <div class="loader_msg">
-            <img src="/assets/img_adder.png" alt="camera" class="loader_msg_icon">
+	<!-- Image loader & cropper markup -->
+	<div id="loader_wrapper" class="loader_wrapper">
+		<div class="loader_msg">
+			<img src="/assets/img_adder.png" alt="camera" class="loader_msg_icon">
 
-            <h2 class="loader_msg_heading">
-                Перетащите сюда фото
-                или нажмите для загрузки
-            </h2>
-        </div>
+			<h2 class="loader_msg_heading">
+				Перетащите сюда фото
+				или нажмите для загрузки
+			</h2>
+		</div>
 
-        <img id="loader_img" src="" alt="img" class="loader_img">
-    </div>
+		<img id="loader_img" src="" alt="img" class="loader_img">
+	</div>
 
-    <div id="cropper_wrapper" class="cropper_wrapper">
-        <div id="cropper_container" class="cropper_container">
-            <img id="cropper_img" src="" alt="" class="cropper_img">
+	<div id="cropper_wrapper" class="cropper_wrapper">
+		<div id="cropper_container" class="cropper_container">
+			<img id="cropper_img" src="" alt="" class="cropper_img">
 
-            <canvas id="cropper_canvas" class="cropper_canvas"></canvas>
-        </div>
+			<div id="cropper_canvas_wrapper" class="cropper_canvas_wrapper">
+				<canvas id="cropper_canvas" class="cropper_canvas"></canvas>
+			</div>
+		</div>
 
-        <div class="cropper_btns">
-            <button id="cropper_btn_crop" class="cropper_btn">
-                Crop
-            </button>
+		<div class="cropper_btns">
+			<button id="cropper_btn_crop" class="cropper_btn">
+				Crop
+			</button>
 
-            <button id="cropper_btn_cancel" class="cropper_btn cropper_btn_cancel">
-                Cancel
-            </button>
-        </div>
-    </div>
+			<button id="cropper_btn_cancel" class="cropper_btn cropper_btn_cancel">
+				Cancel
+			</button>
+		</div>
+	</div>
 
-    <!-- Image loader & cropper script -->
-    <script src="cropper/cropper.js"></script>
+	<!-- Image loader & cropper script -->
+	<script src="cropper/cropper.js"></script>
 
-    <!-- Particle system script -->
-    <!-- <script src="particle_system/particleSystem.js"></script> -->
+	<!-- Particle system script -->
+	<!-- <script src="particle_system/particleSystem.js"></script> -->
 </body>
 </html>

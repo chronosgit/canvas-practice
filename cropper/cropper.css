@@ -4,7 +4,7 @@
     right: 0;
     left: 0;
     
-    padding-block: 2rem;
+    padding: 2rem 1rem;
     /* Display is dynamic */
     display: none; /* None or Flex */
     flex-direction: column;
@@ -19,7 +19,7 @@
 }
 
 .cropper_container {
-    padding: 1rem;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,12 +34,22 @@
     object-fit: contain;
 }   
 
-.cropper_canvas {
+.cropper_canvas_wrapper {
     position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     resize: both;
+}
 
-    /* Temporary */
-    background-color: rgba(252, 79, 79, 0.5);
+.cropper_canvas {
+    --full: 100%;
+    width: var(--full);
+    height: var(--full);
+
+    border: 0.3rem dashed black;
+    background-color: rgba(210, 228, 47, 0.5);
 }
 
 .cropper_btns {
