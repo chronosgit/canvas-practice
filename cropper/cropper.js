@@ -24,6 +24,8 @@ let file = null;
 
 // Translate and resize cropper
 
+
+
 // Cropper init, deinit and action
 
 function openCropper() {
@@ -67,10 +69,6 @@ loaderWrapper.addEventListener("click", () => {
                 // file = loadedFile;
 
                 cropperImg.src = imgDataUrl;
-                cropperImg.onload = () => {
-                    cropperCanvas.width = cropperImg.width;
-                    cropperCanvas.height = cropperImg.height;
-                }
 
                 openCropper();
             };
@@ -92,10 +90,6 @@ loaderWrapper.addEventListener("drop", (e) => {
         // file = droppedFile;
 
         cropperImg.src = URL.createObjectURL(droppedFile);
-        cropperImg.onload = () => {
-            cropperCanvas.width = cropperImg.width;
-            cropperCanvas.height = cropperImg.height;
-        }
 
         openCropper();
     }

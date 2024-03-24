@@ -12,26 +12,46 @@
     align-items: center;
 
     margin: 0 auto;
-    width: 80%;
+    width: 90%;
     background-color: #e9e6e6;
     box-shadow: 0 0 1rem #978f8f;
     border-radius: 1rem;
 }
 
 .cropper_container {
-
+	width: 100%;
+	position: relative;
+	overflow: hidden;
 }
 
 .cropper_img {
+	--size: 100%;
+	width: var(--size);
+	height: var(--size);
+}
 
+.cropper_box {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	border: 1px dashed white;
 }
 
 .cropper_outline {
-
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 .cropper_handler {
-	
+
 }
 
 .cropper_btns {
