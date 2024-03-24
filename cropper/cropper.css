@@ -3,7 +3,7 @@
     top: 1rem;
     right: 0;
     left: 0;
-    
+
     padding: 2rem 1rem;
     /* Display is dynamic */
     display: none; /* None or Flex */
@@ -51,7 +51,35 @@
 }
 
 .cropper_handler {
+	position: absolute;
 
+	--size: 0.8rem;
+	width: var(--size);
+	height: var(--size);
+
+	background-color: white;
+	border-radius: 50%;
+	border: 1px solid gray;
+}
+
+#cropper_handler_nw {
+	top: 0;
+	left: 0;
+}
+
+#cropper_handler_ne {
+	top: 0;
+	right: 0;
+}
+
+#cropper_handler_sw {
+	bottom: 0;
+	left: 0;
+}
+
+#cropper_handler_se {
+	bottom: 0;
+	right: 0;
 }
 
 .cropper_btns {

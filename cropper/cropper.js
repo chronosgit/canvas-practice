@@ -5,6 +5,7 @@ const loaderImg = document.getElementById("loader_img");
 const cropperWrapper = document.getElementById("cropper_wrapper");
 
 const cropperContainer = document.getElementById("cropper_container");
+const cropperBox = document.getElementById("cropper_box");
 const cropperImg = document.getElementById("cropper_img");
 const cropperOutline = document.getElementById("cropper_outline");
 const cropperHandlerNw = document.getElementById("cropper_handler_nw");
@@ -69,6 +70,10 @@ loaderWrapper.addEventListener("click", () => {
                 // file = loadedFile;
 
                 cropperImg.src = imgDataUrl;
+                cropperImg.onload = () => {
+                    cropperContainer.style.width = `${cropperImg.clientWidth}px`;
+                    cropperContainer.style.height = `${cropperImg.clientHeight}px`;
+                };
 
                 openCropper();
             };
@@ -90,6 +95,10 @@ loaderWrapper.addEventListener("drop", (e) => {
         // file = droppedFile;
 
         cropperImg.src = URL.createObjectURL(droppedFile);
+        cropperImg.onload = () => {
+            cropperContainer.style.width = `${cropperImg.clientWidth}px`;
+            cropperContainer.style.height = `${cropperImg.clientHeight}px`;
+        };
 
         openCropper();
     }
