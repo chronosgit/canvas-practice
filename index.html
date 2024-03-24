@@ -17,7 +17,7 @@
 		<div class="loader_msg">
 			<img src="/assets/img_adder.png" alt="camera" class="loader_msg_icon">
 
-			<h2 class="loader_msg_heading">
+			<h2 class="loader_msg_heading" draggable="false">
 				Перетащите сюда фото
 				или нажмите для загрузки
 			</h2>
@@ -28,10 +28,13 @@
 
 	<div id="cropper_wrapper" class="cropper_wrapper">
 		<div id="cropper_container" class="cropper_container">
-			<img id="cropper_img" src="" alt="" class="cropper_img">
+			<img id="cropper_img" src="" alt="" class="cropper_img" draggable="false">
 
-			<div id="cropper_canvas_wrapper" class="cropper_canvas_wrapper">
-				<canvas id="cropper_canvas" class="cropper_canvas"></canvas>
+			<div id="cropper_outline" class="cropper_canvas_wrapper">
+				<div class="cropper_handler cropper_handler_nw"></div>
+				<div class="cropper_handler cropper_handler_ne"></div>
+				<div class="cropper_handler cropper_handler_se"></div>
+				<div class="cropper_handler cropper_handler_sw"></div>
 			</div>
 		</div>
 

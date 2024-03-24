@@ -19,37 +19,19 @@
 }
 
 .cropper_container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
 }
 
 .cropper_img {
-    /* Bad limitter? */
-    --limit: 100%;
-    max-width: var(--limit);
-    max-height: var(--limit);
 
-    object-fit: contain;
-}   
-
-.cropper_canvas_wrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    resize: both;
 }
 
-.cropper_canvas {
-    --full: 100%;
-    width: var(--full);
-    height: var(--full);
+.cropper_outline {
 
-    border: 0.3rem dashed black;
-    background-color: rgba(210, 228, 47, 0.5);
+}
+
+.cropper_handler {
+	
 }
 
 .cropper_btns {
