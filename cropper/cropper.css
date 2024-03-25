@@ -12,7 +12,7 @@
     align-items: center;
 
     margin: 0 auto;
-    width: 90%;
+	max-width: 30rem;
     background-color: #e9e6e6;
     box-shadow: 0 0 1rem #978f8f;
     border-radius: 1rem;
@@ -20,6 +20,7 @@
 
 .cropper_container {
 	width: 100%;
+	max-width: 100%;
 	position: relative;
 	overflow: hidden;
 }
@@ -27,19 +28,18 @@
 .cropper_img {
 	--size: 100%;
 	width: var(--size);
-	height: var(--size);
+	object-fit: contain;
 }
 
 .cropper_box {
 	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 
 	box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.5);
-	border-radius: 50%;
 	border: 1px dashed white;
+	border-radius: 50%;
 }
 
 .cropper_outline {
@@ -48,6 +48,9 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
+	z-index: 2;
+
+	cursor: move;
 }
 
 .cropper_handler {
@@ -60,26 +63,32 @@
 	background-color: white;
 	border-radius: 50%;
 	border: 1px solid gray;
+
+	z-index: 3;
 }
 
 #cropper_handler_nw {
 	top: 0;
 	left: 0;
+	cursor: nw-resize;
 }
 
 #cropper_handler_ne {
 	top: 0;
 	right: 0;
+	cursor: ne-resize;
 }
 
 #cropper_handler_sw {
 	bottom: 0;
 	left: 0;
+	cursor: sw-resize;
 }
 
 #cropper_handler_se {
 	bottom: 0;
 	right: 0;
+	cursor: se-resize;
 }
 
 .cropper_btns {
