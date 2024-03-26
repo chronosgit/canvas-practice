@@ -1,4 +1,4 @@
-.cropper_wrapper {
+.cropper_area {
     position: fixed;
     top: 1rem;
     right: 0;
@@ -18,8 +18,8 @@
     border-radius: 1rem;
 }
 
-.cropper_wrapper,
-.cropper_wrapper * {
+.cropper_area,
+.cropper_area * {
 	user-select: none;
 }
 

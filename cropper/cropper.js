@@ -5,8 +5,7 @@ const loaderImg = document.getElementById("loader_img");
 
 let file = null;
 
-const cropperWrapper = document.getElementById("cropper_wrapper");
-const cropperContainer = document.getElementById("cropper_container");
+const cropperArea = document.getElementById("cropper_area");
 const cropperImg = document.getElementById("cropper_img");
 
 const cropperBtnCrop = document.getElementById("cropper_btn_crop");
@@ -17,16 +16,12 @@ const cropperBtnCancel = document.getElementById("cropper_btn_cancel");
 /* Cropper init, deinit and action */
 
 function openCropper() {
-    cropperWrapper.style.display = "flex";
+    cropperArea.style.display = "flex";
 }
 
 function closeCropper() {
     cropperImg.src = "";
-    cropperWrapper.style.display = "none";
-    cropperOutline.style.top = "0";
-    cropperOutline.style.left = "0";
-
-    clearStates();
+    cropperArea.style.display = "none";
 }
 
 function crop() {
@@ -65,12 +60,12 @@ loaderWrapper.addEventListener("click", () => {
                     const imgH = cropperImg.clientHeight;
 
                     // To remove weird empty space below some images
-                    cropperContainer.style.width = `${imgW}px`;
-                    cropperContainer.style.height = `${imgH}px`;
+                    // cropperContainer.style.width = `${imgW}px`;
+                    // cropperContainer.style.height = `${imgH}px`;
 
                     // To correctly set dims of cropper
-                    cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
-                    cropperOutline.style.height = `${Math.min(imgW, imgH)}px`;
+                    // cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
+                    // cropperOutline.style.height = `${Math.min(imgW, imgH)}px`;
                 };
 
                 openCropper();
@@ -98,12 +93,12 @@ loaderWrapper.addEventListener("drop", (e) => {
             const imgH = cropperImg.clientHeight;
 
             // To remove weird empty space below some images
-            cropperContainer.style.width = `${imgW}px`;
-            cropperContainer.style.height = `${imgH}px`;
+            // cropperContainer.style.width = `${imgW}px`;
+            // cropperContainer.style.height = `${imgH}px`;
 
             // To correctly set dims of cropper
-            cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
-            cropperOutline.style.height = `${Math.min(imgW, imgH)}px`;
+            // cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
+            // cropperOutline.style.height = `${Math.min(imgW, imgH)}px`;
         };
 
         openCropper();
