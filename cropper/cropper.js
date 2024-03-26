@@ -63,18 +63,7 @@ loaderWrapper.addEventListener("click", () => {
                 // file = loadedFile;
 
                 cropperImg.src = imgDataUrl;
-                cropperImg.onload = () => {
-                    const imgW = cropperImg.clientWidth;
-                    const imgH = cropperImg.clientHeight;
-
-                    // To remove weird empty space below some images
-                    cropperContainer.style.width = `${imgW}px`;
-                    cropperContainer.style.height = `${imgH}px`;
-
-                    // To correctly set dims of cropper
-                    // cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
-                    // cropperOutline.style.height = `${Math.min(imgW, imgH)}px`;
-                };
+                cropperImg.onload = onImgLoad;
 
                 openCropper();
             };
@@ -96,18 +85,7 @@ loaderWrapper.addEventListener("drop", (e) => {
         // file = droppedFile;
 
         cropperImg.src = URL.createObjectURL(droppedFile);
-        cropperImg.onload = () => {
-            const imgW = cropperImg.clientWidth;
-            const imgH = cropperImg.clientHeight;
-
-            // To remove weird empty space below some images
-            cropperContainer.style.width = `${imgW}px`;
-            cropperContainer.style.height = `${imgH}px`;
-
-            // To correctly set dims of cropper
-            // cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
-            // cropperOutline.style.height = `${Math.min(imgW, imgH)}px`;
-        };
+        cropperImg.onload = onImgLoad;
 
         openCropper();
     }
@@ -116,3 +94,12 @@ loaderWrapper.addEventListener("drop", (e) => {
 loaderWrapper.addEventListener("dragover", (e) => {
     e.preventDefault();
 });
+
+function onImgLoad() {
+    const imgW = this.clientWidth; // this img
+    const imgH = this.clientHeight;
+
+    // To remove weird empty space below some images
+    cropperContainer.style.width = `${imgW}px`;
+    cropperContainer.style.height = `${imgH}px`;
+}
