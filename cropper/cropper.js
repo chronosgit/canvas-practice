@@ -45,7 +45,7 @@ cropperBtnCancel.addEventListener("click", closeCropper);
 
 
 
-/* Loading img logic */
+//* Loading img logic
 
 // Click download (using FileReader and input to load some image to file)
 loaderWrapper.addEventListener("click", () => {
