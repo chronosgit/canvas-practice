@@ -7,6 +7,14 @@ let file = null;
 
 const cropperArea = document.getElementById("cropper_area");
 const cropperImg = document.getElementById("cropper_img");
+const cropperContainer = document.getElementById("cropper_container");
+
+// Main box, we change it's dims and pos
+const cropperBox = document.getElementById("cropper_box");
+// Outline to have events on it, "invisible" trigger area
+const cropperOutline = document.getElementById("cropper_outline");
+// Circle-like holders for resizing
+const cropperHandlers = document.getElementsByClassName("cropper_handler");
 
 const cropperBtnCrop = document.getElementById("cropper_btn_crop");
 const cropperBtnCancel = document.getElementById("cropper_btn_cancel");
@@ -60,8 +68,8 @@ loaderWrapper.addEventListener("click", () => {
                     const imgH = cropperImg.clientHeight;
 
                     // To remove weird empty space below some images
-                    // cropperContainer.style.width = `${imgW}px`;
-                    // cropperContainer.style.height = `${imgH}px`;
+                    cropperContainer.style.width = `${imgW}px`;
+                    cropperContainer.style.height = `${imgH}px`;
 
                     // To correctly set dims of cropper
                     // cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
@@ -93,8 +101,8 @@ loaderWrapper.addEventListener("drop", (e) => {
             const imgH = cropperImg.clientHeight;
 
             // To remove weird empty space below some images
-            // cropperContainer.style.width = `${imgW}px`;
-            // cropperContainer.style.height = `${imgH}px`;
+            cropperContainer.style.width = `${imgW}px`;
+            cropperContainer.style.height = `${imgH}px`;
 
             // To correctly set dims of cropper
             // cropperOutline.style.width = `${Math.min(imgW, imgH)}px`;
