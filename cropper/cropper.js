@@ -57,8 +57,15 @@ function getAbsMin(a, b) {
     return Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
 }
 
+function getAvg(...args) {
+    const sum = args.reduce((acc, cur) => acc + cur);
+
+    return sum / args.length;
+}
+
 function restoreCursors() {
     cropperBox.style.cursor = "move";
+    cropperContainer.style.cursor = "unset";
 }
 
 //* Event functions
@@ -109,11 +116,13 @@ function onMouseup(e) {
 
 function onImgMousemove(e) {
     if(!isClicked) return;
+    if(e.target !== cropperContainer) return;
     e.stopImmediatePropagation();
 
     switch(opType) {
     case "se":
         catchupNe(e);
+        cropperContainer.style.cursor = "se-resize";
         break;
     }
 }
@@ -149,12 +158,15 @@ function handleNe(e) {
 function handleSe(e) {
     //& Setup
     const handler = cropperHandlerSe.getBoundingClientRect();
-    const xDiff = e.clientX - handler.x;
-    const yDiff = e.clientY - handler.y;
+    const xDiff = e.clientX - getAvg(handler.left, handler.right);
+    const yDiff = e.clientY - getAvg(handler.bottom, handler.top);
     const diff = getAbsMin(xDiff, yDiff);
     const prevBoxWidth = removePxSuffix(cropperBox.style.width);
     const prevBoxHeight = removePxSuffix(cropperBox.style.height);
     const minDim = 150; // Minimal dimension in pixels
+
+    // console.log(xDiff, yDiff, diff);
+    getAvg(1, 2, 3);
 
     //& Are we allowed to resize down?
     if(prevBoxWidth - diff <= minDim) return;
@@ -167,10 +179,12 @@ function handleSe(e) {
     if(resizeDown) {
         cropperBox.style.width = `${prevBoxWidth - diff}px`;
         cropperBox.style.height = `${prevBoxHeight - diff}px`;
-    } else if(cursorParallelHandlerLeft || cursorParallelHandlerUp) { //& No resize
-        console.log("No resize");
+        console.log("RESIZE");
+    } else if(cursorParallelHandlerLeft || cursorParallelHandlerUp) {
+        //& No resize, because it is strict horizontal or vertical 
     } else { //& Resize up
-        console.log("Resize up");
+        cropperBox.style.width = `${prevBoxWidth + diff}px`;
+        cropperBox.style.height = `${prevBoxHeight + diff}px`;
     }
 }
 
