@@ -37,7 +37,6 @@
 .cropper_container {
 	position: absolute;
 	top: 0;
-	z-index: 1;
 	overflow: hidden;
 
 	width: 100%;
