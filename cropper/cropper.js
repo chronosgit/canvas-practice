@@ -120,7 +120,25 @@ function onImgMousemove(e) {
 
 //* Resizing and grabbing functions
 function handleGrab(e) {
-    console.log("Grab...");
+    //& Setup
+    const xDiff = e.clientX - mouse.x;
+    const yDiff = e.clientY - mouse.y;
+    const diff = getAbsMin(xDiff, yDiff);
+    const prevTop = removePxSuffix(cropperBox.style.top);
+    const prevLeft = removePxSuffix(cropperBox.style.left);
+    const boxWidth = removePxSuffix(cropperBox.style.width);
+    const boxHeight = removePxSuffix(cropperBox.style.height);
+    const img = cropperImg.getBoundingClientRect();
+
+    //& Check boundaries
+    const overflowTop = (prevTop + yDiff) <= 0;
+    const overflowBottom = (prevTop + yDiff + boxHeight) >= img.height;
+    const overflowLeft = (prevLeft + xDiff) <= 0;
+    const overflowRight = (prevLeft + xDiff + boxWidth) >= img.width;
+    if(overflowTop || overflowBottom || overflowLeft || overflowRight) return;
+
+    cropperBox.style.top = `${prevTop + yDiff}px`;
+    cropperBox.style.left = `${prevLeft + xDiff}px`;
 }
 
 function handleNe(e) {
@@ -151,7 +169,6 @@ function handleSe(e) {
         cropperBox.style.height = `${prevBoxHeight - diff}px`;
     } else if(cursorParallelHandlerLeft || cursorParallelHandlerUp) { //& No resize
         console.log("No resize");
-        return;
     } else { //& Resize up
         console.log("Resize up");
     }
