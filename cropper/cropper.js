@@ -209,7 +209,7 @@ function catchupSe(e) {
     const prevLeft = removePxSuffix(cropperBox.style.left);
     const diff = getAbsMin(e.clientX - box.right, e.clientY - box.bottom);
 
-    //& Are we moving to the right and to the bottom of box?
+    //& Are we really moving to the right OR to the bottom of box?
     const toTheRight = e.clientX >= box.right;
     const toTheBottom = e.clientY >= box.bottom;
     if(!toTheBottom && !toTheRight) return;
