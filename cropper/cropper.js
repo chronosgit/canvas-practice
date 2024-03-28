@@ -141,6 +141,10 @@ function onImgMousemove(e) {
         catchupSw(e);
         cropperContainer.style.cursor = "sw-resize";
         break;
+    case "nw":
+        catchupNw(e);
+        cropperContainer.style.cursor = "nw-resize";
+        break;
     }
 }
 
@@ -215,7 +219,7 @@ function catchupNe(e) {
     const prevLeft = removePxSuffix(cropperBox.style.left);
     const diff = getAbsMin(e.clientX - box.right, e.clientY - box.top);
 
-    //& Are we really moving to the right OR to the bottom of box?
+    //& Are we really moving to the right OR to the top of box?
     const toTheRight = e.clientX >= box.right;
     const toTheTop = e.clientY <= box.top;
     if(!toTheTop && !toTheRight) return;
@@ -312,13 +316,13 @@ function handleSw(e) {
     //& Possible resizing conditions
     const resizeDown = Boolean(xDiff > 0 && yDiff < 0);
     const cursorParallelHandlerRight = isInArea(e.clientY, handler.top, handler.bottom, 0);
-    const cursorParallelHandlerBottom = isInArea(e.clientX, handler.left, handler.right, 0);
+    const cursorParallelHandlerTop = isInArea(e.clientX, handler.left, handler.right, 0);
     
     if(resizeDown) {
         cropperBox.style.width = `${prevWidth - diff}px`;
         cropperBox.style.height = `${prevHeight - diff}px`;
         cropperBox.style.left = `${prevLeft + diff}px`;
-    } else if(cursorParallelHandlerRight || cursorParallelHandlerBottom) {
+    } else if(cursorParallelHandlerRight || cursorParallelHandlerTop) {
         //& No resize, because it is strict horizontal or vertical 
     } else if(!noResizeLeft && !noResizeBottom) { //& Resize up
         cropperBox.style.width = `${prevWidth + diff}px`;
@@ -336,23 +340,82 @@ function catchupSw(e) {
     const prevLeft = removePxSuffix(cropperBox.style.left);
     const diff = getAbsMin(e.clientX - box.left, e.clientY - box.bottom);
 
-    //& Are we really moving to the right OR to the bottom of box?
+    //& Are we really moving to the left OR to the bottom of box?
     const toTheLeft = e.clientX <= box.left;
     const toTheBottom = e.clientY >= box.top;
     if(!toTheLeft && !toTheBottom) return;
-
+    
     //& Are we allowed to resize up?
     if(prevLeft - diff <= 0) return;
     if(prevTop + prevHeight + diff >= img.bottom - img.top) return;
-
+    
     //& Make a 'catch-up' resizing
     cropperBox.style.width = `${prevWidth + diff}px`;
     cropperBox.style.height = `${prevHeight + diff}px`;
     cropperBox.style.left = `${prevLeft - diff}px`;
 }
 
+//& Nw resize changes width, height, top and left of cropperBox
 function handleNw(e) {
-    console.log("Nw...");
+    //& Setup
+    const handler = cropperHandlerNw.getBoundingClientRect();
+    const xDiff = e.clientX - getAvg(handler.left, handler.right);
+    const yDiff = e.clientY - getAvg(handler.bottom, handler.top);
+    const diff = getAbsMin(xDiff, yDiff);
+    const prevWidth = removePxSuffix(cropperBox.style.width);
+    const prevHeight = removePxSuffix(cropperBox.style.height);
+    const prevTop = removePxSuffix(cropperBox.style.top);
+    const prevLeft = removePxSuffix(cropperBox.style.left);
+
+    //& Are we allowed to resize down?
+    if(prevWidth - diff <= minDim) return;
+
+    //& Are we allowed to resize up?
+    const noResizeLeft = (prevLeft - diff) <= 0;
+    const noResizeTop = (prevTop - diff) <= 0;
+
+    //& Possible resizing conditions
+    const resizeDown = Boolean(xDiff > 0 && yDiff > 0);
+    const cursorParallelHandlerRight = isInArea(e.clientY, handler.top, handler.bottom, 0);
+    const cursorParallelHandlerBottom = isInArea(e.clientX, handler.left, handler.right, 0);
+    
+    if(resizeDown) {
+        cropperBox.style.width = `${prevWidth - diff}px`;
+        cropperBox.style.height = `${prevHeight - diff}px`;
+        cropperBox.style.top = `${prevLeft + diff}px`;
+        cropperBox.style.left = `${prevLeft + diff}px`;
+    } else if(cursorParallelHandlerRight || cursorParallelHandlerBottom) {
+        //& No resize, because it is strict horizontal or vertical 
+    } else if(!noResizeLeft && !noResizeTop) { //& Resize up
+        cropperBox.style.width = `${prevWidth + diff}px`;
+        cropperBox.style.height = `${prevHeight + diff}px`;
+        cropperBox.style.top = `${prevLeft - diff}px`;
+        cropperBox.style.left = `${prevLeft - diff}px`;
+    }
+}
+
+function catchupNw(e) {
+    const box = cropperBox.getBoundingClientRect();
+    const prevWidth = removePxSuffix(cropperBox.style.width);
+    const prevHeight = removePxSuffix(cropperBox.style.height);
+    const prevTop = removePxSuffix(cropperBox.style.top);
+    const prevLeft = removePxSuffix(cropperBox.style.left);
+    const diff = getAbsMin(e.clientX - box.left, e.clientY - box.top);
+
+    //& Are we really moving to the left OR to the top of box?
+    const toTheLeft = e.clientX >= box.left;
+    const toTheTop = e.clientY >= box.top;
+    if(!toTheLeft && !toTheTop) return;
+
+    //& Are we allowed to resize up?
+    if(prevLeft - diff <= 0) return;
+    if(prevTop - diff <= 0) return;
+
+    //& Make a 'catch-up' resizing
+    cropperBox.style.width = `${prevWidth + diff}px`;
+    cropperBox.style.height = `${prevHeight + diff}px`;
+    cropperBox.style.top = `${prevTop - diff}px`;
+    cropperBox.style.left = `${prevLeft - diff}px`;
 }
 
 //* Outline event listeners
@@ -387,6 +450,7 @@ document.addEventListener("mousemove", (e) => {
     const possibleTriggers = [
         cropperOutline, cropperHandlerNe, cropperHandlerSe,
         cropperHandlerSw, cropperHandlerNw, cropperContainer,
+        cropperBox,
     ];
 
     if(!possibleTriggers.includes(e.target)) {
