@@ -26,6 +26,7 @@ const cropperBtnCancel = document.getElementById("cropper_btn_cancel");
 let isClicked = false;
 let opType = "";
 const mouse = {x: undefined, y: undefined};
+const minDim = 150; // Minimal dimension in pixels
 
 
 //* Utility functions
@@ -132,6 +133,10 @@ function onImgMousemove(e) {
         catchupSe(e);
         cropperContainer.style.cursor = "se-resize";
         break;
+    case "ne":
+        catchupNe(e);
+        cropperContainer.style.cursor = "ne-resize";
+        break;
     }
 }
 
@@ -145,20 +150,83 @@ function handleGrab(e) {
     const boxWidth = removePxSuffix(cropperBox.style.width);
     const boxHeight = removePxSuffix(cropperBox.style.height);
     const img = cropperImg.getBoundingClientRect();
+    const handler = cropperHandlerNe.getBoundingClientRect();
 
     //& Check boundaries
-    const overflowTop = (prevTop + yDiff) <= 0;
-    const overflowBottom = (prevTop + yDiff + boxHeight) >= img.height;
-    const overflowLeft = (prevLeft + xDiff) <= 0;
-    const overflowRight = (prevLeft + xDiff + boxWidth) >= img.width;
+    const deviation = 3;
+    const overflowTop = (prevTop + yDiff + deviation) <= 0;
+    const overflowBottom = (prevTop + yDiff + boxHeight - deviation) >= img.height;
+    const overflowLeft = (prevLeft + xDiff + deviation) <= 0;
+    const overflowRight = (prevLeft + xDiff + boxWidth - deviation) >= img.width;
     if(overflowTop || overflowBottom || overflowLeft || overflowRight) return;
 
     cropperBox.style.top = `${prevTop + yDiff}px`;
     cropperBox.style.left = `${prevLeft + xDiff}px`;
 }
 
+//& Ne resize changes width, height and top
 function handleNe(e) {
-    console.log("Ne...");
+    //& Setup
+    const handler = cropperHandlerNe.getBoundingClientRect();
+    const xDiff = e.clientX - getAvg(handler.left, handler.right);
+    const yDiff = e.clientY - getAvg(handler.bottom, handler.top);
+    const diff = getAbsMin(xDiff, yDiff);
+    const img = cropperImg.getBoundingClientRect();
+    const prevWidth = removePxSuffix(cropperBox.style.width);
+    const prevHeight = removePxSuffix(cropperBox.style.height);
+    const prevTop = removePxSuffix(cropperBox.style.top);
+    const prevLeft = removePxSuffix(cropperBox.style.left);
+
+    //& Are we allowed to resize down?
+    if(prevWidth - diff <= minDim) return;
+
+    //& Are we allowed to resize up?
+    const resizeRight = (prevLeft + prevWidth + diff) >= (img.right - img.left);
+    const resizeUp = (prevTop - diff) <= 0;
+
+    //& Possible resizing conditions
+    const resizeDown = Boolean(xDiff < 0 && yDiff > 0);
+    const cursorParallelHandlerLeft = isInArea(e.clientY, handler.top, handler.bottom, 0);
+    const cursorParallelHandlerBottom = isInArea(e.clientX, handler.left, handler.right, 0);
+    
+    if(resizeDown) {
+        cropperBox.style.width = `${prevWidth - diff}px`;
+        cropperBox.style.height = `${prevHeight - diff}px`;
+        cropperBox.style.top = `${prevTop + diff}px`;
+    } else if(cursorParallelHandlerLeft || cursorParallelHandlerBottom) {
+        //& No resize, because it is strict horizontal or vertical 
+    } else if(!resizeRight && !resizeUp) { //& Resize up
+        cropperBox.style.width = `${prevWidth + diff}px`;
+        cropperBox.style.height = `${prevHeight + diff}px`;
+        cropperBox.style.top = `${prevTop - diff}px`;
+    }
+}
+
+function catchupNe(e) {
+    const box = cropperBox.getBoundingClientRect();
+    const img = cropperImg.getBoundingClientRect();
+    const prevWidth = removePxSuffix(cropperBox.style.width);
+    const prevHeight = removePxSuffix(cropperBox.style.height);
+    const prevTop = removePxSuffix(cropperBox.style.top);
+    const prevLeft = removePxSuffix(cropperBox.style.left);
+    const diff = getAbsMin(e.clientX - box.right, e.clientY - box.top);
+
+    console.log(e.clientX, e.clientY);
+    console.log(box.right, box.top);
+
+    //& Are we really moving to the right OR to the bottom of box?
+    const toTheRight = e.clientX >= box.right;
+    const toTheTop = e.clientY <= box.top;
+    if(!toTheTop && !toTheRight) return;
+
+    //& Are we allowed to resize up?
+    if(prevLeft + prevWidth + diff >= img.right - img.left) return;
+    if(prevTop - diff <= 0) return;
+
+    //& Make a 'catch-up' resizing
+    cropperBox.style.width = `${prevWidth + diff}px`;
+    cropperBox.style.height = `${prevHeight + diff}px`;
+    cropperBox.style.top = `${prevTop - diff}px`;
 }
 
 //& Se resize changes width and height of cropperBox
@@ -173,15 +241,13 @@ function handleSe(e) {
     const prevHeight = removePxSuffix(cropperBox.style.height);
     const prevTop = removePxSuffix(cropperBox.style.top);
     const prevLeft = removePxSuffix(cropperBox.style.left);
-    const minDim = 150; // Minimal dimension in pixels
 
     //& Are we allowed to resize down?
     if(prevWidth - diff <= minDim) return;
 
     //& Are we allowed to resize up?
-    const deviation = 1.5;
-    if(prevLeft + prevWidth + diff + handler.width * deviation >= img.right) return;
-    if(prevTop + prevHeight + diff + handler.width * deviation >= img.bottom) return;
+    if(prevLeft + prevWidth + diff >= img.right - img.left) return;
+    if(prevTop + prevHeight + diff >= img.bottom - img.top) return;
 
     //& Possible resizing conditions
     const resizeDown = Boolean(xDiff < 0 && yDiff < 0);
@@ -202,7 +268,6 @@ function handleSe(e) {
 function catchupSe(e) {
     const box = cropperBox.getBoundingClientRect();
     const img = cropperImg.getBoundingClientRect();
-    const handler = cropperHandlerNe.getBoundingClientRect();
     const prevWidth = removePxSuffix(cropperBox.style.width);
     const prevHeight = removePxSuffix(cropperBox.style.height);
     const prevTop = removePxSuffix(cropperBox.style.top);
@@ -215,9 +280,8 @@ function catchupSe(e) {
     if(!toTheBottom && !toTheRight) return;
 
     //& Are we allowed to resize up?
-    const deviation = 1.5;
-    if(prevLeft + prevWidth + diff + handler.width * deviation >= img.right) return;
-    if(prevTop + prevHeight + diff + handler.width * deviation >= img.bottom) return;
+    if(prevLeft + prevWidth + diff >= img.right - img.left) return;
+    if(prevTop + prevHeight + diff >= img.bottom - img.top) return;
 
     //& Make a 'catch-up' resizing
     cropperBox.style.width = `${prevWidth + diff}px`;
