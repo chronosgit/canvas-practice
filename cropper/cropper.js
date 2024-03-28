@@ -181,8 +181,8 @@ function handleNe(e) {
     if(prevWidth - diff <= minDim) return;
 
     //& Are we allowed to resize up?
-    const resizeRight = (prevLeft + prevWidth + diff) >= (img.right - img.left);
-    const resizeUp = (prevTop - diff) <= 0;
+    const noResizeRight = (prevLeft + prevWidth + diff) >= (img.right - img.left);
+    const noResizeUp = (prevTop - diff) <= 0;
 
     //& Possible resizing conditions
     const resizeDown = Boolean(xDiff < 0 && yDiff > 0);
@@ -195,7 +195,7 @@ function handleNe(e) {
         cropperBox.style.top = `${prevTop + diff}px`;
     } else if(cursorParallelHandlerLeft || cursorParallelHandlerBottom) {
         //& No resize, because it is strict horizontal or vertical 
-    } else if(!resizeRight && !resizeUp) { //& Resize up
+    } else if(!noResizeRight && !noResizeUp) { //& Resize up
         cropperBox.style.width = `${prevWidth + diff}px`;
         cropperBox.style.height = `${prevHeight + diff}px`;
         cropperBox.style.top = `${prevTop - diff}px`;
@@ -210,9 +210,6 @@ function catchupNe(e) {
     const prevTop = removePxSuffix(cropperBox.style.top);
     const prevLeft = removePxSuffix(cropperBox.style.left);
     const diff = getAbsMin(e.clientX - box.right, e.clientY - box.top);
-
-    console.log(e.clientX, e.clientY);
-    console.log(box.right, box.top);
 
     //& Are we really moving to the right OR to the bottom of box?
     const toTheRight = e.clientX >= box.right;
@@ -246,9 +243,9 @@ function handleSe(e) {
     if(prevWidth - diff <= minDim) return;
 
     //& Are we allowed to resize up?
-    if(prevLeft + prevWidth + diff >= img.right - img.left) return;
-    if(prevTop + prevHeight + diff >= img.bottom - img.top) return;
-
+    const noResizeRight = (prevLeft + prevWidth + diff) >= (img.right - img.left);
+    const noResizeUp = (prevTop + prevHeight + diff) >= (img.bottom - img.top);
+    
     //& Possible resizing conditions
     const resizeDown = Boolean(xDiff < 0 && yDiff < 0);
     const cursorParallelHandlerLeft = isInArea(e.clientY, handler.top, handler.bottom, 0);
@@ -259,7 +256,7 @@ function handleSe(e) {
         cropperBox.style.height = `${prevHeight - diff}px`;
     } else if(cursorParallelHandlerLeft || cursorParallelHandlerUp) {
         //& No resize, because it is strict horizontal or vertical 
-    } else { //& Resize up
+    } else if(!noResizeRight && !noResizeUp) { //& Resize up
         cropperBox.style.width = `${prevWidth + diff}px`;
         cropperBox.style.height = `${prevHeight + diff}px`;
     }
