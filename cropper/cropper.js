@@ -1,6 +1,8 @@
 //* Loading related setup
 const loaderWrapper = document.getElementById("loader_wrapper");
-const loaderImg = document.getElementById("loader_img");
+const loaderMsg = document.getElementById("loader_msg");
+const canvasImg = document.getElementById("loader_img");
+const ctx = canvasImg.getContext("2d");
 let file = null;
 
 
@@ -474,9 +476,28 @@ function closeCropper() {
 }
 
 function crop() {
-    //& Temporary image assignment
-    loaderImg.src = cropperImg.src;
+    const tempImg = new Image();
+    tempImg.onload = () => {
+        const left = removePxSuffix(cropperBox.style.left);
+        const top = removePxSuffix(cropperBox.style.top);
+        const width = removePxSuffix(cropperBox.style.width);
+        const height = removePxSuffix(cropperBox.style.height);
 
+        console.log(left, top, width, height);
+
+        ctx.drawImage(
+            tempImg, 
+            0, 0, 
+            width, height, 
+            left, top, 
+            width, height,
+        );
+        canvasImg.style.width = cropperBox.style.width;
+        canvasImg.style.height = cropperBox.style.height;
+    }
+    tempImg.src = cropperImg.src;
+
+    loaderMsg.style.display = "none";
     closeCropper();
 }
 
